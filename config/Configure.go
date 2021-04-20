@@ -98,7 +98,15 @@ func (this Configure) All() Configure {
 
 // 获取配置
 func (this Configure) Get(key string) interface{} {
-	return parse(key)
+	paths := strings.Split(key, ".")
+	if len(paths) > 1 {
+		return parse(key)
+	}
+	if value, ok := this[key]; ok {
+		return value
+	} else {
+		panic(key + " non-existent")
+	}
 }
 
 // 第一个字符串元素
