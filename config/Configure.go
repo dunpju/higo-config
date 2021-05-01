@@ -103,7 +103,7 @@ func (this *Configure) All() *Configure {
 func (this *Configure) Get(key string) interface{} {
 	paths := strings.Split(key, ".")
 	if len(paths) > 1 {
-		return parse(key)
+		return parse(this, key)
 	}
 	if value, ok := this.Value[key]; ok {
 		return value

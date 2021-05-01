@@ -61,11 +61,11 @@ func All() *Configure {
 	return container.All()
 }
 
-func parse(path string) interface{} {
+func parse(this *Configure, path string) interface{} {
 	keys := strings.Split(path, ".")
 	previous := make([]string, 0)
 	var current interface{}
-	current = container
+	current = this
 	for _, key := range keys {
 		previous = append(previous, key)
 		if cur, ok := current.(*Configure); ok {
