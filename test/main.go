@@ -7,6 +7,15 @@ import (
 
 func main() {
 
+	//m := map[interface{}]interface{}{"m1": "1", "m2": map[interface{}]interface{}{"m21": "2"}}
+	//m := map[interface{}]interface{}{"m1": "1"}
+	m := map[string]interface{}{"m1": "1", "m2": map[string]interface{}{"m21": "2"}}
+
+	config.Set("m0", m)
+
+	fmt.Println(config.All())
+
+	/**
 	config.Set("h0.hh1.hhh1.hhhh1", "1")
 	config.Set("h0.hh2", "2")
 	config.Set("h0.hh2.hhh2", "3")
@@ -42,6 +51,7 @@ func main() {
 	fmt.Println(conf.Exist("hh2.hhh3"))
 
 
+	*/
 
 	/**
 
@@ -59,5 +69,5 @@ func main() {
 	fmt.Println(configure.Get("hh"))
 	fmt.Println(configure.String("hh.tt.gg.gg1"))
 
-	 */
+	*/
 }

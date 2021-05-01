@@ -6,13 +6,15 @@ import (
 	"strings"
 )
 
+type MS map[string]interface{}
+
 type Configure struct {
 	Sort  []string
-	Value map[string]interface{}
+	Value MS
 }
 
 func New() *Configure {
-	return &Configure{Sort: make([]string, 0), Value: make(map[string]interface{})}
+	return &Configure{Sort: make([]string, 0), Value: make(MS)}
 }
 
 func (this *Configure) set(key string, level, length int, value interface{}) *Configure {
@@ -48,8 +50,42 @@ func (this *Configure) String() string {
 	return string(jsonByte)
 }
 
+func convert(mi map[interface{}]interface{}) *Configure {
+	conf := New()
+	for k, v := range mi {
+		if m, ok := v.(map[interface{}]interface{}); ok {
+			conf.Set(k.(string), convert(m))
+		} else if m, ok := v.(map[string]interface{}); ok {
+			conf.Set(k.(string), convertString(m))
+		} else {
+			conf.Set(k.(string), v)
+		}
+	}
+	return conf
+}
+
+func convertString(mi map[string]interface{}) *Configure {
+	conf := New()
+	for k, v := range mi {
+		if m, ok := v.(map[string]interface{}); ok {
+			conf.Set(k, convertString(m))
+		} else if m, ok := v.(map[interface{}]interface{}); ok {
+			conf.Set(k, convert(m))
+		} else {
+			conf.Set(k, v)
+		}
+	}
+	return conf
+}
+
 // 设置
 func (this *Configure) Set(key string, value interface{}) *Configure {
+	if m, ok := value.(map[interface{}]interface{}); ok {
+		value = convert(m)
+	} else if m, ok := value.(map[string]interface{}); ok {
+		value = convertString(m)
+	}
+
 	paths := strings.Split(key, ".")
 	current := this
 	for level, key := range paths {
