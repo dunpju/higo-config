@@ -33,27 +33,27 @@ func Get(key string) interface{} {
 
 // Env配置
 func Env(key string) interface{} {
-	return Get(EnvPath + "." + key)
+	return Get(EnvConf + "." + key)
 }
 
 // Serve配置
 func Serve(key string) interface{} {
-	return Get(ServePath + "." + key)
+	return Get(ServeConf + "." + key)
 }
 
 // App配置
 func App(key string) interface{} {
-	return Get(AppPath + "." + key)
+	return Get(AppConf + "." + key)
 }
 
 // Db配置
 func Db(key string) interface{} {
-	return Get(DatabasePath + "." + key)
+	return Get(DatabaseConf + "." + key)
 }
 
 // Auth配置
 func Auth(key string) interface{} {
-	return Get(AuthPath + "." + key)
+	return Get(AuthConf + "." + key)
 }
 
 // 所有配置
