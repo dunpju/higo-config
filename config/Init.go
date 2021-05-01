@@ -13,8 +13,13 @@ const (
 )
 
 var (
-	container  *Configure
-	onceConfig sync.Once
+	container   *Configure
+	onceConfig  sync.Once
+	EnvPrefix   string
+	ServePrefix string
+	AppPrefix   string
+	DbPrefix    string
+	AuthPrefix  string
 )
 
 func init() {

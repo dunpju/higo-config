@@ -33,26 +33,41 @@ func Get(key string) interface{} {
 
 // Env配置
 func Env(key string) interface{} {
+	if EnvPrefix != "" {
+		return Get(EnvPrefix + "." + EnvConf + "." + key)
+	}
 	return Get(EnvConf + "." + key)
 }
 
 // Serve配置
 func Serve(key string) interface{} {
+	if ServePrefix != "" {
+		return Get(ServePrefix + "." + ServeConf + "." + key)
+	}
 	return Get(ServeConf + "." + key)
 }
 
 // App配置
 func App(key string) interface{} {
+	if AppPrefix != "" {
+		return Get(AppPrefix + "." + AppConf + "." + key)
+	}
 	return Get(AppConf + "." + key)
 }
 
 // Db配置
 func Db(key string) interface{} {
+	if DbPrefix != "" {
+		return Get(DbPrefix + "." + DatabaseConf + "." + key)
+	}
 	return Get(DatabaseConf + "." + key)
 }
 
 // Auth配置
 func Auth(key string) interface{} {
+	if AuthPrefix != "" {
+		return Get(AuthPrefix + "." + AuthConf + "." + key)
+	}
 	return Get(AuthConf + "." + key)
 }
 
