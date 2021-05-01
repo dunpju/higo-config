@@ -1,130 +1,139 @@
 package config
 
-import "strings"
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+)
 
-type Configure map[interface{}]interface{}
-
-type CacheConfigure map[string]interface{}
-
-func New() Configure {
-	c := make(Configure)
-	return c
+type Configure struct {
+	Sort  []string
+	Value map[string]interface{}
 }
 
-func Set(path string, value interface{}) {
-	paths := strings.Split(path, ".")
-	current := container
-	for level, key := range paths {
-		current = current.set(key, level, len(paths), value).(Configure)
-	}
+func New() *Configure {
+	return &Configure{Sort: make([]string, 0), Value: make(map[string]interface{})}
 }
 
-func (this Configure) set(key string, level, length int, value interface{}) interface{} {
+func (this *Configure) set(key string, level, length int, value interface{}) *Configure {
 	if level < length-1 {
-		if exist, ok := this[key]; ok {
-			this = exist.(Configure)
+		exist, ok := this.Value[key];
+		if configure, ook := exist.(*Configure); ook && ok {
+			this = configure
 		} else {
-			this[key] = New()
-			this = this[key].(Configure)
+			if !ok {
+				this.Sort = append(this.Sort, key)
+			}
+			this.Value[key] = New()
+			this = this.Value[key].(*Configure)
 		}
 	} else {
-		this[key] = value
+		if _, ok := this.Value[key]; !ok {
+			this.Sort = append(this.Sort, key)
+		}
+		this.Value[key] = value
 	}
 	return this
 }
 
-func String(key string) string {
-	configure := container.Get(key)
-	if nil == configure {
-		return ""
-	}
-	return configure.(string)
+func (this *Configure) Sprint() {
+	fmt.Println(this.String())
 }
 
-func Int(key string) int {
-	configure := container.Get(key)
-	if nil == configure {
-		return 0
+func (this *Configure) String() string {
+	jsonByte, err := json.Marshal(this)
+	if err != nil {
+		panic(err)
 	}
-	return configure.(int)
-}
-
-// 外部获取配置
-func Get(key string) interface{} {
-	config := container.Get(key)
-	if nil == config {
-		return nil
-	}
-	return config
-}
-
-// 外部获取所有配置
-func All() Configure {
-	return container.All()
-}
-
-func parse(path string) interface{} {
-	paths := strings.Split(path, ".")
-	var current interface{}
-	previous := make([]string, 0)
-	current = container
-	for _, key := range paths {
-		previous = append(previous, key)
-		if cur, ok := current.(Configure); ok {
-			current = get(cur, key, previous)
-		}
-	}
-	return current
-}
-
-func get(current Configure, key string, previous []string) interface{} {
-	v, ok := current[key]
-	if !ok {
-		panic(strings.Join(previous, ".") + " non-existent")
-	}
-	return v
+	return string(jsonByte)
 }
 
 // 设置
-func (this Configure) Set(key string, value interface{}) Configure {
-	this[key] = value
+func (this *Configure) Set(key string, value interface{}) *Configure {
+	paths := strings.Split(key, ".")
+	current := this
+	for level, key := range paths {
+		current = current.set(key, level, len(paths), value)
+	}
 	return this
 }
 
 // 获取所有配置
-func (this Configure) All() Configure {
+func (this *Configure) All() *Configure {
 	return this
 }
 
 // 获取配置
-func (this Configure) Get(key string) interface{} {
+func (this *Configure) Get(key string) interface{} {
 	paths := strings.Split(key, ".")
 	if len(paths) > 1 {
 		return parse(key)
 	}
-	if value, ok := this[key]; ok {
+	if value, ok := this.Value[key]; ok {
 		return value
 	} else {
 		panic(key + " non-existent")
 	}
 }
 
-// 第一个字符串元素
-func FirstString() string {
-	var first string
-	for _, v := range container {
-		first = v.(string)
-		break
+func (this *Configure) Remove(key string) bool {
+	keys := strings.Split(key, ".")
+	if len(keys) > 1 {
+		previous := make([]string, 0)
+		var prev *Configure
+		current := this
+		currKey := ""
+		for _, key := range keys {
+			currKey = key
+			previous = append(previous, currKey)
+			if _, ok := current.Value[currKey]; ok {
+				if cur, ok := current.Value[currKey].(*Configure); ok {
+					prev = current
+					current = cur
+				} else {
+					panic(strings.Join(previous, ".") + " isn't *Configure type")
+				}
+			} else {
+				return false
+			}
+		}
+		return remove(prev, currKey)
 	}
-	return first
+	return remove(this, key)
+}
+
+// 第一个字符串元素
+func (this *Configure) FirstString() string {
+	key := this.Sort[0]
+	return this.Value[key].(string)
+}
+
+// 最后字符串元素
+func (this *Configure) EndString() string {
+	key := this.Sort[len(this.Sort)-1]
+	return this.Value[key].(string)
 }
 
 // 第一个数字元素
-func FirstInt() int {
-	var first int
-	for _, v := range container {
-		first = v.(int)
-		break
-	}
-	return first
+func (this *Configure) FirstInt() int {
+	key := this.Sort[0]
+	return this.Value[key].(int)
+}
+
+// 最后数字元素
+func (this *Configure) EndInt() int {
+	key := this.Sort[len(this.Sort)-1]
+	return this.Value[key].(int)
+}
+
+// 获取索引字符串元素
+func (this *Configure) IndexString(index int) string {
+	key := this.Sort[index]
+	return this.Value[key].(string)
+}
+
+// 获取索引字符串元素
+func (this *Configure) IndexInt(index int) int {
+	key := this.Sort[index]
+	return this.Value[key].(int)
 }
