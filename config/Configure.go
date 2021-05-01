@@ -129,6 +129,17 @@ func (this *Configure) Exist(key string) bool {
 	return exist(this, key)
 }
 
+func (this *Configure) Empty() bool {
+	if len(this.Value) == 0 {
+		return true
+	}
+	return false
+}
+
+func (this *Configure) Len() int {
+	return len(this.Value)
+}
+
 // 第一个字符串元素
 func (this *Configure) FirstString() string {
 	key := this.Sort[0]
