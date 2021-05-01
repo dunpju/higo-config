@@ -35,8 +35,11 @@ func main() {
 	fmt.Println(conf.FirstString())
 	fmt.Println(conf.IndexString(2))
 	fmt.Println(conf.EndString())
+	fmt.Println(conf.Exist("hh2.hhh3.hhhh4.hhhhh1"))
+	fmt.Println(conf.Exist("hh2.hhh3"))
 	fmt.Println(conf.Remove("hh2.hhh3"))
 	fmt.Println(config.All().String())
+	fmt.Println(conf.Exist("hh2.hhh3"))
 
 
 

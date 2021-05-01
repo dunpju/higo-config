@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 )
@@ -107,7 +106,6 @@ func get(this *Configure, key string, previous []string) interface{} {
 }
 
 func remove(this *Configure, key string) bool {
-	fmt.Println("110 this", key, this)
 	if _, ok := this.Value[key]; ok {
 		var tmp []string
 		for _, value := range this.Sort {
@@ -121,4 +119,11 @@ func remove(this *Configure, key string) bool {
 		return false
 	}
 	return true
+}
+
+func exist(this *Configure, key string) bool {
+	if _, ok := this.Value[key]; ok {
+		return true
+	}
+	return false
 }

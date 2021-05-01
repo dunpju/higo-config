@@ -102,6 +102,33 @@ func (this *Configure) Remove(key string) bool {
 	return remove(this, key)
 }
 
+func (this *Configure) Exist(key string) bool {
+	keys := strings.Split(key, ".")
+	if len(keys) > 1 {
+		previous := make([]string, 0)
+		current := this
+		currKey := ""
+		for i, key := range keys {
+			currKey = key
+			previous = append(previous, key)
+			if _, ok := current.Value[key]; ok {
+				if i < len(keys)-1 {
+					if cur, ok := current.Value[key].(*Configure); ok {
+						current = cur
+					} else {
+						panic(strings.Join(previous, ".") + " isn't *Configure type")
+					}
+				}
+			} else {
+				return false
+			}
+		}
+		key = currKey
+		this = current
+	}
+	return exist(this, key)
+}
+
 // 第一个字符串元素
 func (this *Configure) FirstString() string {
 	key := this.Sort[0]
