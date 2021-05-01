@@ -5,11 +5,11 @@ import (
 )
 
 const (
-	EnvPath      = "env."
-	ServePath    = "serve."
-	AppPath      = "app."
-	DatabasePath = "database."
-	AuthPath     = "auth."
+	EnvPath      = "env"
+	ServePath    = "serve"
+	AppPath      = "app"
+	DatabasePath = "database"
+	AuthPath     = "auth"
 )
 
 var (
