@@ -10,6 +10,7 @@ const (
 	AppConf      = "app"
 	DatabaseConf = "database"
 	AuthConf     = "auth"
+	AnnoConf     = "anno"
 )
 
 var (
