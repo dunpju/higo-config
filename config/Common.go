@@ -71,6 +71,14 @@ func Auth(key string) interface{} {
 	return Get(AuthConf + "." + key)
 }
 
+// Anno配置
+func Anno(key string) interface{} {
+	if AnnoPrefix != "" {
+		return Get(AnnoPrefix + "." + AnnoConf + "." + key)
+	}
+	return Get(AnnoConf + "." + key)
+}
+
 // 所有配置
 func All() *Configure {
 	return container.All()

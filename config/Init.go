@@ -21,6 +21,7 @@ var (
 	AppPrefix   string
 	DbPrefix    string
 	AuthPrefix  string
+	AnnoPrefix  string
 )
 
 func init() {
