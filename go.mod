@@ -1,4 +1,4 @@
-module github.com/dengpju/higo-config
+module github.com/dunpju/higo-config
 
 go 1.14
 
