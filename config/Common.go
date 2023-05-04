@@ -22,7 +22,7 @@ func Int(key string) int {
 	return configure.(int)
 }
 
-// 获取配置
+// Get 获取配置
 func Get(key string) interface{} {
 	value := container.Get(key)
 	if nil == value {
@@ -31,7 +31,7 @@ func Get(key string) interface{} {
 	return value
 }
 
-// Env配置
+// Env Env配置
 func Env(key string) interface{} {
 	if EnvPrefix != "" {
 		return Get(EnvPrefix + "." + EnvConf + "." + key)
@@ -39,7 +39,7 @@ func Env(key string) interface{} {
 	return Get(EnvConf + "." + key)
 }
 
-// Serve配置
+// Serve Serve配置
 func Serve(key string) interface{} {
 	if ServePrefix != "" {
 		return Get(ServePrefix + "." + ServeConf + "." + key)
@@ -47,7 +47,7 @@ func Serve(key string) interface{} {
 	return Get(ServeConf + "." + key)
 }
 
-// App配置
+// App App配置
 func App(key string) interface{} {
 	if AppPrefix != "" {
 		return Get(AppPrefix + "." + AppConf + "." + key)
@@ -55,7 +55,7 @@ func App(key string) interface{} {
 	return Get(AppConf + "." + key)
 }
 
-// Db配置
+// Db Db配置
 func Db(key string) interface{} {
 	if DbPrefix != "" {
 		return Get(DbPrefix + "." + DatabaseConf + "." + key)
@@ -63,7 +63,7 @@ func Db(key string) interface{} {
 	return Get(DatabaseConf + "." + key)
 }
 
-// Auth配置
+// Auth 配置
 func Auth(key string) interface{} {
 	if AuthPrefix != "" {
 		return Get(AuthPrefix + "." + AuthConf + "." + key)
@@ -71,7 +71,7 @@ func Auth(key string) interface{} {
 	return Get(AuthConf + "." + key)
 }
 
-// Anno配置
+// Anno 配置
 func Anno(key string) interface{} {
 	if AnnoPrefix != "" {
 		return Get(AnnoPrefix + "." + AnnoConf + "." + key)
@@ -79,7 +79,7 @@ func Anno(key string) interface{} {
 	return Get(AnnoConf + "." + key)
 }
 
-// 所有配置
+// All 所有配置
 func All() *Configure {
 	return container.All()
 }

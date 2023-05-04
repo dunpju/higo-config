@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/dengpju/higo-config/config"
+	"github.com/dunpju/higo-config/config"
 )
 
 func main() {

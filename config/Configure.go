@@ -19,7 +19,7 @@ func New() *Configure {
 
 func (this *Configure) set(key string, level, length int, value interface{}) *Configure {
 	if level < length-1 {
-		exist, ok := this.Value[key];
+		exist, ok := this.Value[key]
 		if configure, ook := exist.(*Configure); ook && ok {
 			this = configure
 		} else {
@@ -78,7 +78,7 @@ func convertString(mi map[string]interface{}) *Configure {
 	return conf
 }
 
-// 设置
+// Set 设置
 func (this *Configure) Set(key string, value interface{}) *Configure {
 	if m, ok := value.(map[interface{}]interface{}); ok {
 		value = convert(m)
@@ -94,12 +94,12 @@ func (this *Configure) Set(key string, value interface{}) *Configure {
 	return this
 }
 
-// 获取所有配置
+// All 获取所有配置
 func (this *Configure) All() *Configure {
 	return this
 }
 
-// 获取配置
+// Get 获取配置
 func (this *Configure) Get(key string) interface{} {
 	paths := strings.Split(key, ".")
 	if len(paths) > 1 {
